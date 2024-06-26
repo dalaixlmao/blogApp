@@ -15,8 +15,6 @@ blogRouter.use("/*", async (c, next) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
-
-  console.log("running");
   const t = c.req.header("Authorization");
   if (t) {
     const token = t.split(" ")[1];
@@ -34,7 +32,7 @@ blogRouter.use("/*", async (c, next) => {
   }
 });
 
-blogRouter.get("/:id", async (c) => {
+blogRouter.get("/post/:id", async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
@@ -42,6 +40,15 @@ blogRouter.get("/:id", async (c) => {
   const id = c.req.param("id");
   const post = await prisma.post.findUnique({
     where: { id: id },
+    select: {
+      title: true,
+      content: true,
+      author: {
+        select: {
+          name: true,
+        },
+      },
+    },
   });
   if (post) {
     c.status(200);
@@ -49,6 +56,49 @@ blogRouter.get("/:id", async (c) => {
   } else {
     c.status(400);
     return c.json({ message: "not valid post" });
+  }
+});
+
+blogRouter.get("/bulk", async (c) => {
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+  const allPosts = await prisma.post.findMany({
+    select: {
+      id: true,
+      title: true,
+      content: true,
+      author: {
+        select: {
+          name: true,
+        },
+      },
+    },
+  });
+
+  if (allPosts) {
+    c.status(200);
+    return c.json({ posts: allPosts });
+  } else {
+    c.status(400);
+    return c.json({ message: "cant fetch data" });
+  }
+});
+
+blogRouter.get("/getposts", async (c) => {
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+  const userId = c.get("jwtPayload");
+  const posts = await prisma.post.findMany({
+    where: { authorId: userId },
+  });
+  if (posts) {
+    c.status(200);
+    return c.json({ posts: posts });
+  } else {
+    c.status(400);
+    return c.json({ message: "error getting posts from user" });
   }
 });
 

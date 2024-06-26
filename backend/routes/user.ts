@@ -16,8 +16,8 @@ userRouter.post("/signup", async (c) => {
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
   const body = await c.req.json();
+  // console.log(body);
   const success = signupReq.safeParse(body).success;
-
   if (!success) {
     c.status(403);
     return c.json({ message: "failed to sign up, invalid input" });
@@ -63,7 +63,7 @@ userRouter.post("/signin", async (c) => {
 	{
 		const token = await sign({id:chk.id}, c.env.JwtPassword);
 		c.status(200);
-		return c.json({message:"signed in successfully", token:token});
+		return c.json({message:"Signed in successfully", token:token});
 	}
 	c.status(403);
 	return c.json({message:"unable to sign in"});
