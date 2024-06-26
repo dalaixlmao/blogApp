@@ -7,7 +7,12 @@ import URL from "../config";
 
 export default function Blogs() {
   const [loading, setLoading] = useState(true);
-  const [blogs, setBlogs] = useState([]);
+  const [blogs, setBlogs] = useState([{
+    title:"",
+    id:"",
+    content:"",
+    author:{name:""}
+  }]);
   const navigate = useNavigate();
 
   function onClick() {

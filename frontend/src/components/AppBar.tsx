@@ -7,7 +7,7 @@ export default function AppBar({onSite, onClick}:{onSite:string, onClick?:()=>vo
 
   return (
     <div className="border-b-2 flex flex-row w-full justify-between p-4 pl-10 items-center">
-      <div className="text-xl font-bold hover:cursor-pointer" onClick={e=>{navigate('/blogs')}}>Medium</div>
+      <div className="text-xl font-bold hover:cursor-pointer" onClick={e=>{navigate('/blogs'); console.log(e)}}>Medium</div>
       <div className="flex flex-row items-center">
         <div className="mr-3">
           <button

@@ -13,7 +13,7 @@ export default function BlogComponent({
 }) {
     const navigate=useNavigate();
   return (
-    <div className="w-4/5 p-5 border-b-2" onClick={(e)=>{navigate('/blog/'+id)}}>
+    <div className={`w-4/5 p-5 border-b-2 ${id==""?"hidden":""}`} onClick={(e)=>{navigate('/blog/'+id); console.log(e)}}>
       <div className="flex flex-row w-full items-center">
         <div className="w-5 h-5 bg-gray-300 flex items-center justify-center rounded-full text-xs mr-1">{author[0]}</div>
         <div className="text-sm font-regular">{author}</div>
