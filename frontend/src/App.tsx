@@ -13,10 +13,9 @@ function App() {
           <Route
             path={"/"}
             element={
-              <div>
-                <a href={"/signup"}>signup </a>
-                <a href={"/signin"}>signin </a>
-                <a href={"/blog"}>blog </a>
+              <div className="h-full w-full flex md:flex-row flex-col">
+                <a href={"/signup"} className="flex justify-center items-center md:w-1/2 w-full md:h-full h-1/2 hover:bg-gray-700 hover:text-white text-7xl font-bold">Sign up </a>
+                <a href={"/signin"} className="flex justify-center items-center md:w-1/2 w-full md:h-full h-1/2 hover:bg-gray-700 hover:text-white text-7xl font-bold">Sign in </a>
               </div>
             }
           ></Route>
