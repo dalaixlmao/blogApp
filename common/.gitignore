@@ -1,0 +1,4 @@
+# prod
+dist/
+# deps
+node_modules/
