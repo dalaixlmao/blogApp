@@ -7,61 +7,71 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import URL from "../config";
+import Error from "../components/Error";
 
-export default function Signin(){
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const navigate=useNavigate();
-    //   let send = false;
-  
-    async function onClick() {
-      console.log(email, password);
-  
-      const req: SigninReq = {
-        email: email,
-        password: password,
-      };
-      try {
-        const response = await axios.post(
-          URL+"/api/v1/user/signin",
-          req
-        );
-        if (response.data.message == "Signed in successfully") {
-            localStorage.setItem("token", "Brearer "+response.data.token);
-            navigate('/blogs');
-          }
-      } catch (e) {
-        console.log(e);
+export default function Signin() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  //   let send = false;
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+
+  async function onClick() {
+    setLoading(true);
+    console.log(email, password);
+
+    const req: SigninReq = {
+      email: email,
+      password: password,
+    };
+    try {
+      const response = await axios.post(URL + "/api/v1/user/signin", req);
+      if (response.data.message == "Signed in successfully") {
+        localStorage.setItem("token", "Brearer " + response.data.token);
+        navigate("/blogs");
       }
+      setLoading(false);
+    } catch (e) {
+      setError(true);
+      setTimeout(()=>{setError(false)}, 3000);
+      console.log(e);
+      setLoading(false);
     }
-  
-    return (
-      <div className="w-full h-full flex flex-row">
-        <div className="md:w-1/2 w-full flex flex-col justify-center items-center">
-          <Heading
-            text={"Log in"}
-            subText={"Don't have an account?"}
-            to={"./signup"}
-          />
-          <InputBox type={"email"} placeholder={"email"} setFunction={setEmail} />
-          <InputBox
-            type={"password"}
-            placeholder={"password"}
-            setFunction={setPassword}
-          />
-          <Button width={"full"} text={"Sign in"} onClick={onClick} />
-        </div>
-  
-        <div className="w-1/2 md:flex hidden flex-col justify-center items-center bg-gray-100">
-          <RightSection
-            quote={
-              "The customer service I received was exceptional. The support team went above and beyond to address my concerns."
-            }
-            author={"Jules Winnfield"}
-            designation={"CEO, Acme Inc"}
-          />
-        </div>
-      </div>
-    );
   }
-  
+
+  return (
+    <div className="w-full h-full flex flex-row">
+      {error && <div className="w-full absolute top-12 flex flex-col items-center"><Error message={"Wrong Input try Again"} /></div>}
+      <div className="md:w-1/2 w-full flex flex-col justify-center items-center">
+        <Heading
+          text={"Log in"}
+          subText={"Don't have an account?"}
+          to={"./signup"}
+        />
+        <InputBox type={"email"} placeholder={"email"} setFunction={setEmail} />
+        <InputBox
+          type={"password"}
+          placeholder={"password"}
+          setFunction={setPassword}
+        />
+        <Button
+          width={"full"}
+          text={"Sign in"}
+          onClick={onClick}
+          loading={loading}
+        />
+      </div>
+
+      <div className="w-1/2 md:flex hidden flex-col justify-center items-center bg-gray-100">
+        <RightSection
+          quote={
+            "The customer service I received was exceptional. The support team went above and beyond to address my concerns."
+          }
+          author={"Jules Winnfield"}
+          designation={"CEO, Acme Inc"}
+        />
+      </div>
+    </div>
+  );
+}
