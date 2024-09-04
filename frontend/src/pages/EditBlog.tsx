@@ -25,10 +25,10 @@ export default function EditBlog() {
     });
   }
   return (
-    <div className="h-4/5">
+    <div className="h-full">
       <AppBar onSite={"editBlog"} onClick={onClick} />
-      <div className="flex w-full justify-center h-4/5 w-3/5">
-        <div className="flex flex-col h-full">
+      <div className="flex w-full md:justify-center h-4/5">
+        <div className="flex flex-col h-full md:pl-0 pl-3 w-4/5 md:w-3/5">
           <input
             className="text-3xl mt-10 focus:outline-none"
             placeholder="Title"
