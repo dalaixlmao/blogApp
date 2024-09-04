@@ -37,7 +37,7 @@ export default function AppBar({
             setOpen(!open);
 
           }}
-          className="w-8 h-8 flex justify-center items-center bg-gray-300 rounded-full text-sm"
+          className="w-8 cursor-pointer h-8 flex justify-center items-center bg-gray-300 rounded-full text-sm"
         >
           {name[0]}
         </div>
