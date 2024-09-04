@@ -21,7 +21,7 @@ export default function AppBar({
           console.log(e);
         }}
       >
-        Medium
+        <a className="text-3xl font-light">B</a>log
       </div>
       <div className="flex flex-row items-center">
         <div className="mr-3">
