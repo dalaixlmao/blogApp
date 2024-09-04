@@ -61,6 +61,10 @@ userRouter.post("/signin", async (c) => {
   const chk = await prisma.user.findUnique({where:{email:body.email}});
   if(chk)
 	{
+    if(chk.password != body.password){
+      c.status(403);
+    return c.json({ message: "failed to sign in, wrong inputs" });
+    }
 		const token = await sign({id:chk.id}, c.env.JwtPassword);
 		c.status(200);
 		return c.json({message:"Signed in successfully", token:token});
