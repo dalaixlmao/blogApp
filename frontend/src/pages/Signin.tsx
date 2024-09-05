@@ -5,13 +5,14 @@ import RightSection from "../components/RightSection";
 import { SigninReq } from "@dalaixlmao/common";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import URL from "../config";
 import Error from "../components/Error";
 
 export default function Signin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [validPass, setPass] = useState(false);
   const navigate = useNavigate();
   //   let send = false;
   const [loading, setLoading] = useState(false);
@@ -39,6 +40,15 @@ export default function Signin() {
       setLoading(false);
     }
   }
+  useEffect(()=>{
+    if(password.length>=8)
+      setPass(true);
+    else
+    setPass(false);
+  }, [password, setPass])
+
+
+
 
   return (
     <div className="w-full h-full flex flex-row">
@@ -55,6 +65,7 @@ export default function Signin() {
           placeholder={"password"}
           setFunction={setPassword}
         />
+        {!validPass && <div className="text-red-500 text-[12px]">Password should be of at least 8 characters</div>}
         <Button
           width={"full"}
           text={"Sign in"}

@@ -2,7 +2,7 @@ import Button from "../components/Button";
 import InputBox from "../components/InputBox";
 import Heading from "../components/Heading";
 import RightSection from "../components/RightSection";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SignupReq } from "@dalaixlmao/common";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -14,6 +14,7 @@ export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [validPass, setPass] = useState(false);
   const navigate = useNavigate();
   const [error, setError] = useState(false);
 
@@ -42,6 +43,15 @@ export default function Signup() {
     }
   }
 
+  useEffect(()=>{
+    if(password.length>=8)
+      setPass(true);
+    else
+    setPass(false);
+  }, [password, setPass])
+
+
+
   return (
     <div className="w-full h-full flex flex-row">
       {error && (
@@ -62,6 +72,7 @@ export default function Signup() {
           placeholder={"password"}
           setFunction={setPassword}
         />
+        {!validPass && <div className="text-red-500 text-[12px]">Password should be of at least 8 characters</div>}
         <Button
           width={"full"}
           text={"Sign up"}
